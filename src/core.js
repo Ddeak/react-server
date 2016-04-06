@@ -16,3 +16,11 @@ export function deleteUser(state, action) {
 	const users = state.get('users').delete(action.user_id)
 	return state.set('users', users)
 }
+
+export function allUsers(state, action) {
+	if (!state.get('users')) {
+		state = state.set('users', List())
+	}
+
+	return state.set('users', List(action.users))
+}

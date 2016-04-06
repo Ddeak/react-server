@@ -1,5 +1,6 @@
 import Server from 'socket.io'
-import { addUser, deleteUser } from './core'
+import { deleteUser, addUser } from '../db/rethink'
+import { updateUsers } from '../index'
 
 export function startServer(store) {
 	const io = new Server().attach(8090)
@@ -13,7 +14,23 @@ export function startServer(store) {
 
 		socket.on('action', (state) => {
 			console.log(JSON.stringify(state))
-			store.dispatch(state)
-		})
-	})
+
+			switch (state.type) {
+				case 'DELETE_USER':
+					deleteUser(state.user_id, updateUsers);
+					break;
+				case 'ADD_USER':
+					addUser(state.user, updateUsers);
+					break;
+				default:
+					store.dispatch(state);
+			}
+		});
+
+		updateUsers();		
+	});
+}
+
+function dispatch(store, state) {
+	store.dispatch(state)
 }
