@@ -1,6 +1,6 @@
 import makeStore from './src/store'
 import { startServer } from './src/server'
-import { insert, create_table, get, subscribe_to_changes } from './db/rethink'
+import { insert, create_table, get } from './db/rethink'
 
 export const store = makeStore();
 startServer(store);
@@ -12,7 +12,6 @@ var r = require('rethinkdbdash')({
 });
 
 var table = 'User';
-//create_table(table);
 
 r.table('User')
 	.changes()
@@ -25,12 +24,12 @@ r.table('User')
 	});
 
 export function updateUsers() {
-get('User', function(data) {
-	store.dispatch({
-		type: 'ALL_USERS',
-		users: data
+	get('User', function(data) {
+		store.dispatch({
+			type: 'ALL_USERS',
+			users: data
+		})
 	})
-})
 }
 
 console.log("Server Started Successfully!")
