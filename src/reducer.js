@@ -1,14 +1,17 @@
-import { addUser, deleteUser, allUsers, INITIAL_STATE } from './core'
+import { allUsers, INITIAL_STATE_LIST } from './core'
+import { combineReducers } from 'redux'
 
-export default function reducer(state = INITIAL_STATE, action) {
+function users(state = INITIAL_STATE_LIST, action) {
 	switch (action.type) {
-		case 'ADD_USER':
-			return addUser(state, action)
-		case 'DELETE_USER':
-			return deleteUser(state, action)
 		case 'ALL_USERS':
 			return allUsers(state, action)
 		default:
 			return state
 	}
 }
+
+const rootReducer = combineReducers({
+	users
+})
+
+export default rootReducer

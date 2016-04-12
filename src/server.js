@@ -1,26 +1,27 @@
 import Server from 'socket.io'
-import { deleteUser, addUser } from '../db/rethink'
 import { updateUsers } from '../index'
+var Users = require('gp-db-models').Users
+
 
 export function startServer(store) {
 	const io = new Server().attach(8090)
 
 	store.subscribe(
-		() => io.emit('state', store.getState().toJS())
+		() => {
+			io.emit('state', store.getState())
+		}
 	)
 
 	io.on('connection', (socket) => {
-		socket.emit('state', store.getState().toJS())
+		socket.emit('state', store.getState())
 
-		socket.on('action', (state) => {
-			console.log(JSON.stringify(state))
-
-			switch (state.type) {
-				case 'DELETE_USER':
-					deleteUser(state.user_id, updateUsers);
-					break;
+		socket.on('action', (action) => {
+			switch (action.type) {
 				case 'ADD_USER':
-					addUser(state.user, updateUsers);
+					Users.add(action.user)
+					break;
+				case 'DELETE_USER':
+					Users.delete(action.user_id);
 					break;
 				default:
 					store.dispatch(state);
@@ -29,8 +30,4 @@ export function startServer(store) {
 
 		updateUsers();		
 	});
-}
-
-function dispatch(store, state) {
-	store.dispatch(state)
 }
