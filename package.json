@@ -18,6 +18,7 @@
     "gp-logger": "0.0.1",
     "immutable": "^3.7.6",
     "redux": "^3.3.1",
+    "redux-thunk": "^2.0.1",
     "rethinkdbdash": "^2.2.18",
     "socket.io": "^1.4.5",
     "thinky": "^2.2.7"

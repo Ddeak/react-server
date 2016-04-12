@@ -1,9 +1,6 @@
 import makeStore from './src/store'
 import { startServer } from './src/server'
-var Users = require('gp-db-models').Users;
-
-var l = require('gp-logger');
-l.log("hellpo")
+import { Users } from 'gp-db-models'
 
 export const store = makeStore();
 startServer(store);
